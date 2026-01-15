@@ -28,6 +28,7 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import TrackShipment from "./pages/TrackShipment";
 import NotFound from "./pages/NotFound";
+import Registration from "./pages/Registration";
 
 const queryClient = new QueryClient();
 
@@ -59,6 +60,7 @@ const App = () => (
               <Route path="/sales-orders" element={<ProtectedRoute requiredModule="sales_orders"><AppLayout><SalesOrders /></AppLayout></ProtectedRoute>} />
               <Route path="/billing" element={<ProtectedRoute requiredModule="billing"><AppLayout><Billing /></AppLayout></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute requiredModule="reports"><AppLayout><Reports /></AppLayout></ProtectedRoute>} />
+              <Route path="/register" element={<ProtectedRoute requiredModule="register"><AppLayout><Registration /></ AppLayout></ProtectedRoute>}></Route>
               <Route path="/settings" element={<ProtectedRoute><AppLayout><Settings /></AppLayout></ProtectedRoute>} />
               <Route path="/track" element={<ProtectedRoute><AppLayout><TrackShipment /></AppLayout></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />

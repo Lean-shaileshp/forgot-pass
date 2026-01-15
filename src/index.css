@@ -114,3 +114,187 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+body {
+  background: #f5f9fb;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.register-page {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+.logo-box {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 12px;
+  background: #0b3a7e;
+  color: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.register-card {
+  background: #fff;
+  width: 900px;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.register-header {
+  text-align: left;
+}
+
+.register-header.icon {
+  background: #e6f7f5;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+}
+
+.register-header h2 {
+  margin: 10px 0 4px;
+}
+
+.register-header p {
+  color: #7a8b99;
+  font-size: 14px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.tabs span {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-weight: 500;
+  color: #7a8b99;
+}
+
+.tabs .active {
+  background: #fff;
+  border-radius: 8px;
+  color: #000;
+}
+
+/* Grid */
+.form-grid {
+  display: grid;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.form-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.form-grid.two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 6px;
+  display: block;
+  /* font-weight:  */
+
+}
+
+input {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #dbe3ea;
+  font-size: 14px;
+  height: 40px;
+  width: 100%;
+}
+
+input:focus {
+  outline: none;
+  border-color: #6bcfc5;
+  background: #f6fffe;
+}
+
+/* Section title */
+.section-title {
+  margin: 25px 0 10px;
+}
+
+/* Password field */
+.password-field {
+  position: relative;
+}
+
+.password-field .eye {
+  position: absolute;
+  right: 12px;
+  top: 38px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Buttons */
+.button-row {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  /* background-color: #0b3a7e; */
+}
+
+.primary-btn {
+  flex: 1;
+  background:#0b3a7e;
+  border: none;
+  padding: 14px;
+  color: #fff;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  padding: 14px 20px;
+  border-radius: 8px;
+  border: 1px solid #dbe3ea;
+  background: #fff;
+  cursor: pointer;
+}
+
+.regi{
+  text-align: center;
+  font-size: 25px;
+  font-display: auto;
+  font-weight: bold;
+}
+
+.para{
+  text-align: center;
+  font-size: 25px;
+  /* font-weight: bold; */
+
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .register-card {
+    width: 100%;
+  }
+  .form-grid.three,
+  .form-grid.two {
+    grid-template-columns: 1fr;
+  }
+}
