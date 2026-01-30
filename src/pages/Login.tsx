@@ -105,6 +105,16 @@ export default function Login() {
             </Button>
           </form>
 
+          <div className="mt-4 text-center">
+            <button
+              type="button"
+              className="forgot-password-link"
+              onClick={() => navigate('/forgot-password')}
+            >
+              Forgot Password?
+            </button>
+          </div>
+
           <div className="mt-6 p-4 rounded-lg bg-muted/50 border border-border">
             <p className="text-xs font-medium text-muted-foreground mb-2">Demo Credentials:</p>
             <div className="space-y-1 text-xs text-muted-foreground">

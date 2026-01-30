@@ -53,7 +53,14 @@ const Billing = () => {
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
   const [isEmailPreviewOpen, setIsEmailPreviewOpen] = useState(false);
-  const [emailPreviewData, setEmailPreviewData] = useState<any>(null);
+  type EmailPreviewData = {
+    recipientEmail: string;
+    recipientName: string;
+    subject: string;
+    trackingNumber: string;
+    details: Record<string, string | number>;
+  };
+  const [emailPreviewData, setEmailPreviewData] = useState<EmailPreviewData | null>(null);
   const [viewingInvoice, setViewingInvoice] = useState<Invoice | null>(null);
   const [paymentAmount, setPaymentAmount] = useState('');
   const { toast } = useToast();

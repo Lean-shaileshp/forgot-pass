@@ -2,10 +2,10 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { QRCodeScanner } from '@/components/QRCodeScanner';
 import { QRCodeDisplay } from '@/components/QRCodeDisplay';
+import { ShipmentTimeline } from '@/components/ShipmentTimeline';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Package, Truck, MapPin, Clock, CheckCircle, ArrowLeft } from 'lucide-react';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Docket, Manifest } from '@/types';
@@ -17,8 +17,12 @@ const getStatusColor = (status: string) => {
     case "arrived":
     case "closed":
       return "default";
+    case "packed":
+    case "picked":
+      return "secondary";
     case "in_transit":
     case "dispatched":
+    case "at_hub":
       return "secondary";
     case "out_for_delivery":
       return "outline";
@@ -38,6 +42,10 @@ const getStatusIcon = (status: string) => {
     case "arrived":
     case "closed":
       return <CheckCircle className="h-4 w-4 text-green-500" />;
+    case "packed":
+      return <Package className="h-4 w-4 text-blue-500" />;
+    case "picked":
+      return <MapPin className="h-4 w-4 text-purple-500" />;
     case "in_transit":
     case "dispatched":
       return <Truck className="h-4 w-4 text-blue-500" />;
@@ -173,12 +181,7 @@ export default function TrackShipment() {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-                      {getStatusIcon(docket.status)}
-                      <span className="text-sm">
-                        Current Status: <strong className="capitalize">{docket.status.replace('_', ' ')}</strong>
-                      </span>
-                    </div>
+                    <ShipmentTimeline currentStatus={docket.status} />
                     
                     <QRCodeDisplay
                       value={docket.docketNumber}
@@ -238,12 +241,7 @@ export default function TrackShipment() {
                       </div>
                     </div>
                     
-                    <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-                      {getStatusIcon(manifest.status)}
-                      <span className="text-sm">
-                        Current Status: <strong className="capitalize">{manifest.status.replace('_', ' ')}</strong>
-                      </span>
-                    </div>
+                    <ShipmentTimeline currentStatus={manifest.status} />
                     
                     <QRCodeDisplay
                       value={manifest.manifestNumber}

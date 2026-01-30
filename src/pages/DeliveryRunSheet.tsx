@@ -101,7 +101,14 @@ export default function DeliveryRunSheetPage() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [isEmailPreviewOpen, setIsEmailPreviewOpen] = useState(false);
-  const [emailPreviewData, setEmailPreviewData] = useState<any>(null);
+  type EmailPreviewData = {
+    recipientEmail: string;
+    recipientName: string;
+    subject: string;
+    trackingNumber: string;
+    details: Record<string, string | number>;
+  };
+  const [emailPreviewData, setEmailPreviewData] = useState<EmailPreviewData | null>(null);
   const [editingDRS, setEditingDRS] = useState<DeliveryRunSheet | null>(null);
   const [viewingDRS, setViewingDRS] = useState<DeliveryRunSheet | null>(null);
   const [deletingDRS, setDeletingDRS] = useState<DeliveryRunSheet | null>(null);
@@ -404,7 +411,7 @@ export default function DeliveryRunSheetPage() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={getStatusColor(run.status) as any}>
+                        <Badge variant={getStatusColor(run.status)}>
                         {run.status.replace(/_/g, " ")}
                       </Badge>
                     </TableCell>
@@ -597,7 +604,7 @@ export default function DeliveryRunSheetPage() {
             <div className="space-y-4">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-bold">{viewingDRS.drsNumber}</span>
-                <Badge variant={getStatusColor(viewingDRS.status) as any}>
+                <Badge variant={getStatusColor(viewingDRS.status)}>
                   {viewingDRS.status.replace(/_/g, " ")}
                 </Badge>
               </div>

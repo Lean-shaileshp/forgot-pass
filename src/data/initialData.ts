@@ -161,8 +161,8 @@ export const initialDockets: Docket[] = [
     freight: 1500,
     otherCharges: 100,
     totalAmount: 1600,
-    status: 'in_transit',
-    currentLocation: 'Delhi Hub',
+    status: 'packed',
+    currentLocation: 'Mumbai Hub',
     createdAt: '2024-12-28T12:00:00Z',
     updatedAt: '2024-12-29T08:00:00Z'
   },
@@ -189,6 +189,29 @@ export const initialDockets: Docket[] = [
     currentLocation: 'Delhi Hub',
     createdAt: '2024-12-29T09:00:00Z',
     updatedAt: '2024-12-29T09:00:00Z'
+  },
+  {
+    id: '3',
+    docketNumber: 'DKT000003',
+    customerId: '1',
+    customerName: 'ABC Electronics',
+    consigneeName: 'Metro Electronics',
+    consigneePhone: '9876543222',
+    consigneeAddress: '321 Connaught Place, Delhi',
+    originOffice: 'Mumbai Hub',
+    destinationOffice: 'Delhi Hub',
+    pieces: 2,
+    weight: 10,
+    chargeableWeight: 10,
+    serviceType: 'express',
+    paymentMode: 'prepaid',
+    freight: 1000,
+    otherCharges: 50,
+    totalAmount: 1050,
+    status: 'picked',
+    currentLocation: 'Mumbai Hub',
+    createdAt: '2024-12-30T10:00:00Z',
+    updatedAt: '2024-12-30T11:00:00Z'
   }
 ];
 

@@ -93,20 +93,27 @@ const Reports = () => {
     { month: 'Dec', revenue: 78000 },
   ];
 
-  const exportToCSV = (data: any[], filename: string) => {
+  function exportToCSV<T extends Record<string, unknown>>(data: T[], filename: string) {
     if (data.length === 0) return;
-    
+
     const headers = Object.keys(data[0]).join(',');
-    const rows = data.map(row => Object.values(row).join(','));
+    const rows = data.map(row =>
+      Object.values(row)
+        .map((v) => {
+          if (v === null || v === undefined) return '';
+          return String(v);
+        })
+        .join(',')
+    );
     const csv = [headers, ...rows].join('\n');
-    
+
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
     a.download = `${filename}.csv`;
     a.click();
-  };
+  }
 
   return (
     <div className="space-y-6">

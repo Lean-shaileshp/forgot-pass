@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -73,37 +74,7 @@ export function GPSTrackingMap({ truckData, selectedTruckId, onTruckSelect }: GP
     setMapboxToken(tempToken);
     setShowTokenDialog(false);
   };
-
-  const initializeMap = () => {
-    if (!mapContainer.current || !mapboxToken) return;
-
-    try {
-      mapboxgl.accessToken = mapboxToken;
-      
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [72.8777, 19.076], // Mumbai
-        zoom: 11,
-      });
-
-      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-      
-      map.current.on('load', () => {
-        setIsMapReady(true);
-        updateMarkers();
-      });
-
-      map.current.on('error', (e) => {
-        console.error('Mapbox error:', e);
-        setIsMapReady(false);
-      });
-    } catch (error) {
-      console.error('Failed to initialize map:', error);
-    }
-  };
-
-  const updateMarkers = () => {
+  const updateMarkers = useCallback(() => {
     if (!map.current || !isMapReady) return;
 
     // Clear existing markers
@@ -147,20 +118,47 @@ export function GPSTrackingMap({ truckData, selectedTruckId, onTruckSelect }: GP
 
       markers.current.push(marker);
     });
-  };
+  }, [trucks, isMapReady, onTruckSelect]);
+
+  const initializeMap = useCallback(() => {
+    if (!mapContainer.current || !mapboxToken) return;
+
+    try {
+      mapboxgl.accessToken = mapboxToken;
+
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [72.8777, 19.076], // Mumbai
+        zoom: 11,
+      });
+
+      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+      map.current.on('load', () => {
+        setIsMapReady(true);
+        updateMarkers();
+      });
+
+      map.current.on('error', (e) => {
+        console.error('Mapbox error:', e);
+        setIsMapReady(false);
+      });
+    } catch (error) {
+      console.error('Failed to initialize map:', error);
+    }
+  }, [mapboxToken, updateMarkers]);
 
   useEffect(() => {
-    if (mapboxToken) {
-      initializeMap();
-    }
+    initializeMap();
     return () => {
       map.current?.remove();
     };
-  }, [mapboxToken]);
+  }, [initializeMap]);
 
   useEffect(() => {
     updateMarkers();
-  }, [trucks, isMapReady]);
+  }, [updateMarkers]);
 
   useEffect(() => {
     if (selectedTruckId) {

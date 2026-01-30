@@ -79,7 +79,7 @@ export interface Docket {
   freight: number;
   otherCharges: number;
   totalAmount: number;
-  status: 'booked' | 'in_transit' | 'at_hub' | 'out_for_delivery' | 'delivered' | 'returned';
+  status: 'booked' | 'packed' | 'picked' | 'in_transit' | 'at_hub' | 'out_for_delivery' | 'delivered' | 'returned';
   currentLocation: string;
   createdAt: string;
   updatedAt: string;

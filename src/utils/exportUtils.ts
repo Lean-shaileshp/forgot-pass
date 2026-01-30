@@ -1,6 +1,6 @@
 // Export utilities for CSV/Excel downloads
 
-export function exportToCSV<T extends Record<string, any>>(
+export function exportToCSV<T extends Record<string, unknown>>(
   data: T[],
   filename: string,
   columns: { key: keyof T; header: string }[]
@@ -10,23 +10,27 @@ export function exportToCSV<T extends Record<string, any>>(
   }
 
   const headers = columns.map(c => c.header).join(',');
-  const rows = data.map(item =>
-    columns.map(col => {
-      const value = item[col.key];
-      // Handle strings with commas, quotes, and newlines
-      if (typeof value === 'string') {
-        const escaped = value.replace(/"/g, '""');
-        return `"${escaped}"`;
-      }
-      return value ?? '';
-    }).join(',')
-  ).join('\n');
+  const rows = data
+    .map(item =>
+      columns
+        .map(col => {
+          const value = item[col.key] as unknown;
+          // Handle strings with commas, quotes, and newlines
+          if (typeof value === 'string') {
+            const escaped = (value as string).replace(/"/g, '""');
+            return `"${escaped}"`;
+          }
+          return (value ?? '') as string | number;
+        })
+        .join(',')
+    )
+    .join('\n');
 
   const csv = `${headers}\n${rows}`;
   downloadFile(csv, `${filename}.csv`, 'text/csv');
 }
 
-export function exportToExcel<T extends Record<string, any>>(
+export function exportToExcel<T extends Record<string, unknown>>(
   data: T[],
   filename: string,
   columns: { key: keyof T; header: string }[]
@@ -37,12 +41,16 @@ export function exportToExcel<T extends Record<string, any>>(
 
   // Create a simple HTML table that Excel can open
   const headers = columns.map(c => `<th>${c.header}</th>`).join('');
-  const rows = data.map(item =>
-    `<tr>${columns.map(col => {
-      const value = item[col.key];
-      return `<td>${value ?? ''}</td>`;
-    }).join('')}</tr>`
-  ).join('');
+  const rows = data
+    .map(item =>
+      `<tr>${columns
+        .map(col => {
+          const value = item[col.key] as unknown;
+          return `<td>${value ?? ''}</td>`;
+        })
+        .join('')}</tr>`
+    )
+    .join('');
 
   const html = `
     <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel">

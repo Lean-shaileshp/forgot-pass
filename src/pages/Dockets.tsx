@@ -298,8 +298,15 @@ export default function Dockets() {
               </TableHeader>
               <TableBody>
                 {paginatedData.map((docket) => (
-                  <TableRow key={docket.id}>
-                    <TableCell className="font-medium">{docket.docketNumber}</TableCell>
+                  <TableRow 
+                    key={docket.id} 
+                    className="cursor-pointer hover:bg-muted/50"
+                    onClick={() => {
+                      setViewingDocket(docket);
+                      setIsViewModalOpen(true);
+                    }}
+                  >
+                    <TableCell className="font-medium text-primary hover:underline">{docket.docketNumber}</TableCell>
                     <TableCell>
                       <div>
                         <div className="font-medium">{docket.customerName}</div>
@@ -324,7 +331,7 @@ export default function Dockets() {
                       {formatCurrency(docket.totalAmount)}
                     </TableCell>
                     <TableCell>
-                      <Badge variant={getStatusColor(docket.status) as any}>
+                      <Badge variant={getStatusColor(docket.status)}>
                         {docket.status.replace(/_/g, " ")}
                       </Badge>
                     </TableCell>
@@ -669,80 +676,185 @@ export default function Dockets() {
 
       {/* View Docket Modal with QR */}
       <Dialog open={isViewModalOpen} onOpenChange={setIsViewModalOpen}>
-        <DialogContent className="max-w-3xl">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <QrCode className="h-5 w-5" />
-              Docket Details
+              Docket Details - {viewingDocket?.docketNumber}
             </DialogTitle>
           </DialogHeader>
           {viewingDocket && (
             <div className="grid md:grid-cols-[1fr,auto] gap-6">
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-muted-foreground">Docket Number</Label>
-                    <p className="font-medium">{viewingDocket.docketNumber}</p>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground">Status</Label>
-                    <Badge variant={getStatusColor(viewingDocket.status) as any}>
-                      {viewingDocket.status.replace(/_/g, " ")}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-muted-foreground">Customer</Label>
-                    <p className="font-medium">{viewingDocket.customerName}</p>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground">Consignee</Label>
-                    <p className="font-medium">{viewingDocket.consigneeName}</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-muted-foreground">Origin</Label>
-                    <p className="font-medium">{viewingDocket.originOffice}</p>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground">Destination</Label>
-                    <p className="font-medium">{viewingDocket.destinationOffice}</p>
+              <div className="space-y-6">
+                {/* Basic Information */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg border-b pb-2">Basic Information</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-muted-foreground">Docket Number</Label>
+                      <p className="font-medium text-lg">{viewingDocket.docketNumber}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Status</Label>
+                      <div className="mt-1">
+                        <Badge variant={getStatusColor(viewingDocket.status)} className="text-sm">
+                          {viewingDocket.status.replace(/_/g, " ").toUpperCase()}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Current Location</Label>
+                      <p className="font-medium">{viewingDocket.currentLocation}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Service Type</Label>
+                      <p className="font-medium capitalize">{viewingDocket.serviceType}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label className="text-muted-foreground">Pieces</Label>
-                    <p className="font-medium">{viewingDocket.pieces}</p>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground">Weight</Label>
-                    <p className="font-medium">{viewingDocket.weight} kg</p>
-                  </div>
-                  <div>
-                    <Label className="text-muted-foreground">Service</Label>
-                    <p className="font-medium capitalize">{viewingDocket.serviceType}</p>
+
+                {/* Shipper & Consignee */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg border-b pb-2">Shipper & Consignee</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-sm text-muted-foreground">SHIPPER</h4>
+                      <div className="space-y-2">
+                        <div>
+                          <Label className="text-muted-foreground text-xs">Customer Name</Label>
+                          <p className="font-medium">{viewingDocket.customerName}</p>
+                        </div>
+                        <div>
+                          <Label className="text-muted-foreground text-xs">Customer ID</Label>
+                          <p className="font-medium">{viewingDocket.customerId}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <h4 className="font-medium text-sm text-muted-foreground">CONSIGNEE</h4>
+                      <div className="space-y-2">
+                        <div>
+                          <Label className="text-muted-foreground text-xs">Name</Label>
+                          <p className="font-medium">{viewingDocket.consigneeName}</p>
+                        </div>
+                        <div>
+                          <Label className="text-muted-foreground text-xs">Phone</Label>
+                          <p className="font-medium">{viewingDocket.consigneePhone}</p>
+                        </div>
+                        <div>
+                          <Label className="text-muted-foreground text-xs">Address</Label>
+                          <p className="font-medium">{viewingDocket.consigneeAddress}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="text-muted-foreground">Payment Mode</Label>
-                    <p className="font-medium capitalize">{viewingDocket.paymentMode}</p>
+
+                {/* Route Details */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg border-b pb-2">Route Details</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-muted-foreground">Origin Office</Label>
+                      <p className="font-medium">{viewingDocket.originOffice}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Destination Office</Label>
+                      <p className="font-medium">{viewingDocket.destinationOffice}</p>
+                    </div>
                   </div>
-                  <div>
-                    <Label className="text-muted-foreground">Total Amount</Label>
-                    <p className="font-medium">{formatCurrency(viewingDocket.totalAmount)}</p>
+                </div>
+
+                {/* Shipment Details */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg border-b pb-2">Shipment Details</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div>
+                      <Label className="text-muted-foreground">Pieces</Label>
+                      <p className="font-medium">{viewingDocket.pieces}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Weight</Label>
+                      <p className="font-medium">{viewingDocket.weight} kg</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Volumetric Weight</Label>
+                      <p className="font-medium">{viewingDocket.volumetricWeight || 'N/A'} kg</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Chargeable Weight</Label>
+                      <p className="font-medium">{viewingDocket.chargeableWeight} kg</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Payment & Charges */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg border-b pb-2">Payment & Charges</h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div>
+                      <Label className="text-muted-foreground">Payment Mode</Label>
+                      <p className="font-medium capitalize">{viewingDocket.paymentMode}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Declared Value</Label>
+                      <p className="font-medium">{viewingDocket.declaredValue ? formatCurrency(viewingDocket.declaredValue) : 'N/A'}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">COD Amount</Label>
+                      <p className="font-medium">{viewingDocket.codAmount ? formatCurrency(viewingDocket.codAmount) : 'N/A'}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Freight</Label>
+                      <p className="font-medium">{formatCurrency(viewingDocket.freight)}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Other Charges</Label>
+                      <p className="font-medium">{formatCurrency(viewingDocket.otherCharges)}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Total Amount</Label>
+                      <p className="font-medium text-lg font-bold">{formatCurrency(viewingDocket.totalAmount)}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Timestamps */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg border-b pb-2">Timestamps</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label className="text-muted-foreground">Created At</Label>
+                      <p className="font-medium">{new Date(viewingDocket.createdAt).toLocaleString()}</p>
+                    </div>
+                    <div>
+                      <Label className="text-muted-foreground">Last Updated</Label>
+                      <p className="font-medium">{new Date(viewingDocket.updatedAt).toLocaleString()}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center">
+              
+              {/* QR Code Section */}
+              <div className="flex flex-col items-center space-y-4">
                 <QRCodeDisplay
                   value={viewingDocket.docketNumber}
                   title="Scan to Track"
                   subtitle={viewingDocket.consigneeName}
-                  size={120}
+                  size={150}
                 />
+                <div className="text-center space-y-2">
+                  <p className="text-sm text-muted-foreground">Docket Number</p>
+                  <p className="font-mono font-bold text-lg">{viewingDocket.docketNumber}</p>
+                </div>
+                <Button 
+                  variant="outline" 
+                  onClick={() => printDocket(viewingDocket)}
+                  className="w-full"
+                >
+                  <Printer className="h-4 w-4 mr-2" />
+                  Print Docket
+                </Button>
               </div>
             </div>
           )}

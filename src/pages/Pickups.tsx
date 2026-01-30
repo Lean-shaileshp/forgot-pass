@@ -288,7 +288,7 @@ export default function Pickups() {
                       </span>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={getStatusColor(pickup.status) as any}>
+                      <Badge variant={getStatusColor(pickup.status)}>
                         {pickup.status.replace("_", " ")}
                       </Badge>
                     </TableCell>

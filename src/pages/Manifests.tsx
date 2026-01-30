@@ -329,7 +329,7 @@ export default function Manifests() {
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">{manifest.totalWeight} kg</TableCell>
                     <TableCell>
-                      <Badge variant={getStatusColor(manifest.status) as any}>
+                      <Badge variant={getStatusColor(manifest.status)}>
                         {manifest.status.replace(/_/g, " ")}
                       </Badge>
                     </TableCell>
@@ -543,7 +543,7 @@ export default function Manifests() {
                   </div>
                   <div>
                     <Label className="text-muted-foreground">Status</Label>
-                    <Badge variant={getStatusColor(viewingManifest.status) as any}>
+                    <Badge variant={getStatusColor(viewingManifest.status)}>
                       {viewingManifest.status.replace(/_/g, " ")}
                     </Badge>
                   </div>

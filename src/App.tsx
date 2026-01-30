@@ -29,10 +29,12 @@ import Settings from "./pages/Settings";
 import TrackShipment from "./pages/TrackShipment";
 import NotFound from "./pages/NotFound";
 import Registration from "./pages/Registration";
+import ForgotPassword from "./pages/forgotpassword";
 
 const queryClient = new QueryClient();
 
 const App = () => (
+  
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -42,6 +44,7 @@ const App = () => (
           <NotificationProvider>
             <Routes>
               <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
               <Route path="/dashboard" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
               <Route path="/customers" element={<ProtectedRoute requiredModule="customers"><AppLayout><Customers /></AppLayout></ProtectedRoute>} />
@@ -60,7 +63,7 @@ const App = () => (
               <Route path="/sales-orders" element={<ProtectedRoute requiredModule="sales_orders"><AppLayout><SalesOrders /></AppLayout></ProtectedRoute>} />
               <Route path="/billing" element={<ProtectedRoute requiredModule="billing"><AppLayout><Billing /></AppLayout></ProtectedRoute>} />
               <Route path="/reports" element={<ProtectedRoute requiredModule="reports"><AppLayout><Reports /></AppLayout></ProtectedRoute>} />
-              <Route path="/register" element={<ProtectedRoute requiredModule="register"><AppLayout><Registration /></ AppLayout></ProtectedRoute>}></Route>
+              <Route path="/register" element={<ProtectedRoute requiredModule="register"><AppLayout><Registration /></AppLayout></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><AppLayout><Settings /></AppLayout></ProtectedRoute>} />
               <Route path="/track" element={<ProtectedRoute><AppLayout><TrackShipment /></AppLayout></ProtectedRoute>} />
               <Route path="*" element={<NotFound />} />
@@ -70,6 +73,7 @@ const App = () => (
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
+  
 );
 
 export default App;
